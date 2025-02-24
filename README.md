@@ -3,7 +3,7 @@
 
 # **Email & PDF Ingestion System**  
 
-A **Next.js** application that connects to an email account, fetches emails with PDF attachments, and stores metadata in a **PostgreSQL** database.  
+
 
 ## **Features**  
 
