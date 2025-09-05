@@ -213,11 +213,6 @@ MIT License © 2025 [Ananya Gupta](https://github.com/gupta-nu)
 
 
 
-👉 I’ve made it clean, professional, and structured like a real open-source project README.
-
-Would you like me to also create a **banner/logo suggestion** (like “Invox — from inbox to insights” at the top) so it looks even more polished on GitHub?
-
-
 
 
 
