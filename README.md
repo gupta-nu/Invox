@@ -1,76 +1,70 @@
 
 
+# Invox
 
-# **Email & PDF Ingestion System**  
+**Email & PDF Ingestion System**
+
+Invox is a **Next.js application** for automated email ingestion and PDF processing. It connects to IMAP/POP3 email accounts, downloads PDF attachments, stores them locally, and indexes their metadata (sender, subject, date, filename) into a **PostgreSQL database**. The system supports both manual and scheduled ingestion, providing a simple UI for configuration and monitoring.
 
 
 
-## **Features**  
+## ✨ Features
 
-- Add/Edit/Delete email configurations (IMAP/POP3).  
-- Auto-download PDF attachments to a local directory (`./pdfs/`).  
-- Store metadata (sender, date, subject, filename) in a database.  
-- Manual & automatic email checking (every 5 minutes).  
-- Simple UI for configuration and email ingestion.  
+* 📧 **Configurable email accounts** — Add, edit, or delete IMAP/POP3 connections.
+* 📂 **Automatic PDF ingestion** — Downloads attachments into `./pdfs/`.
+* 🗄️ **Metadata storage** — Persists sender, subject, date, and filenames in PostgreSQL.
+* ⏱️ **Manual & scheduled fetching** — Trigger ingestion manually or every 5 minutes.
+* 🖥️ **Web UI** — Manage configurations and monitor email ingestion in real time.
 
----
 
-## **Installation**  
 
-### **1. Clone the Repository**  
+## 🚀 Installation
+
+### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/gupta-nu/pdf-email-ingestion.git
-cd pdf-email-ingestion
+git clone https://github.com/gupta-nu/invox.git
+cd invox
 ```
 
-### **2. Install Dependencies**  
+### 2. Install Dependencies
 
 ```bash
 npm install
 ```
 
----
 
-## **Database Setup**  
 
-### **1. Install PostgreSQL (if not installed)**  
+## 🗄️ Database Setup
 
-For Ubuntu/Debian:  
+### Install PostgreSQL (Ubuntu/Debian)
 
 ```bash
 sudo apt update
 sudo apt install postgresql postgresql-contrib
 ```
 
-### **2. Create Database**  
-
-Ensure your PostgreSQL user has the correct permissions:  
+### Create Database & User
 
 ```bash
 sudo -u postgres psql
 ALTER USER ananya CREATEDB;
 \q
-```
 
-Create the database:  
-
-```bash
 createdb email_pdf_ingestion
 ```
 
----
 
-## **Configuration**  
+## ⚙️ Configuration
 
-Create a `.env` file in the project root:  
+Create a `.env` file in the project root:
 
 ```bash
 touch .env
 nano .env
 ```
 
-Add the following environment variables (update credentials accordingly):  
+Add the following (update values as needed):
 
 ```env
 DATABASE_URL="postgresql://ananya:yourpassword@localhost:5432/email_pdf_ingestion?schema=public"
@@ -81,85 +75,78 @@ IMAP_USER="your-email@example.com"
 IMAP_PASSWORD="your-email-password"
 ```
 
----
 
-## **Project Setup**  
 
-```bash
-mkdir -p src/app/api/email-ingestion/check-emails src/lib public pdfs
-touch src/app/page.tsx \
-      src/app/api/email-ingestion/route.ts \
-      src/app/api/email-ingestion/check-emails/route.ts \
-      src/lib/email-client.ts
-```
+## 🛠️ Project Setup
 
-Run database migrations:  
+### Initialize Prisma
 
 ```bash
 npx prisma migrate dev --name init
 ```
 
-Create a PDF storage directory:  
+### Create PDF Storage Directory
 
 ```bash
 mkdir pdfs
 ```
 
----
 
-## **Running the Application**  
+
+## ▶️ Running the Application
 
 ```bash
 npm run dev
 ```
 
-Access the UI at: [http://localhost:3000](http://localhost:3000)  
+Access UI at: [http://localhost:3000](http://localhost:3000)
 
----
 
-## **Usage**  
 
-### **1. Add an Email Account**  
+## 📌 Usage
 
-- Open [http://localhost:3000](http://localhost:3000)  
-- Enter the following details:  
-  - **Email Address**  
-  - **Connection Type (IMAP/POP3)**  
-  - **Host** (e.g., imap.your-provider.com)  
-  - **Port** (993 for IMAP, 995 for POP3)  
-  - **Username and Password**  
+### 1. Add Email Account
 
-### **2. Fetch Emails**  
+* Open the UI → enter:
 
-- **Manual:** Click "Check Emails Now"  
-- **Automatic:** Runs every 5 minutes (default)  
+  * Email Address
+  * Connection Type (IMAP/POP3)
+  * Host (e.g., `imap.gmail.com`)
+  * Port (993 IMAP / 995 POP3)
+  * Username & Password
 
----
+### 2. Fetch Emails
 
-## **Verification**  
+* **Manual**: Click *Check Emails Now*
+* **Automatic**: Runs every 5 minutes
 
-### **Check Stored PDFs**  
+
+
+## 🔍 Verification
+
+### Check Stored PDFs
 
 ```bash
 ls ./pdfs/
 ```
 
-### **Check Database Records**  
+### View Database Records
 
 ```bash
 npx prisma studio
 ```
 
-Verify entries in:  
-- `EmailIngestionConfig`  
-- `PDFMetadata`  
+Relevant tables:
 
----
+* `EmailIngestionConfig`
+* `PDFMetadata`
 
-## **Project Structure**  
+
+
+## 📂 Project Structure
 
 ```
-pdf-email-ingestion/
+invox/
 ├── prisma/
 │   └── schema.prisma       # Database schema
 ├── src/
@@ -167,47 +154,41 @@ pdf-email-ingestion/
 │   │   ├── page.tsx        # Main UI
 │   │   └── api/
 │   │       └── email-ingestion/
-│   │           ├── route.ts             # CRUD operations
+│   │           ├── route.ts             # CRUD for email configs
 │   │           └── check-emails/
-│   │               └── route.ts         # Email fetching logic
+│   │               └── route.ts         # Email ingestion logic
 │   └── lib/
-│       ├── email-client.ts # IMAP handling
-│       └── types.ts        # TypeScript interfaces
+│       ├── email-client.ts # IMAP/POP3 client
+│       └── types.ts        # Shared types
 ├── public/                 # Static assets
 └── pdfs/                   # PDF storage
 ```
 
----
 
-## **Troubleshooting**  
 
-### **No PDFs Downloaded**  
-- Ensure the email contains PDF attachments.  
-- Check server logs for errors.  
-- Verify `pdfs/` directory has write permissions.  
+## 🛠️ Troubleshooting
 
-### **Database Connection Issues**  
+### No PDFs Downloaded
+
+* Ensure emails have PDF attachments.
+* Check logs in `npm run dev`.
+* Confirm `pdfs/` has write permissions.
+
+### Database Issues
 
 ```bash
 psql -U ananya -d email_pdf_ingestion
-```
-
-- Confirm that PostgreSQL is running:  
-
-```bash
 sudo systemctl status postgresql
 ```
 
-- Check if credentials in `.env` are correct.  
+Verify `.env` credentials.
 
-### **IMAP Connection Issues**  
-- Test email credentials with an external client.  
-- Enable "Less Secure Apps" if using Gmail.  
-- Use **App Passwords** for security.  
+### IMAP/POP3 Issues
 
-[Enable App Password](https://myaccount.google.com/security)  
+* Test account credentials externally.
+* For Gmail, enable App Passwords.
 
-### **TypeScript or Prisma Errors**  
+### Prisma/TypeScript Errors
 
 ```bash
 npx prisma generate
@@ -215,35 +196,27 @@ rm -rf .next
 npm run dev
 ```
 
----
 
-## **Testing & Debugging**  
 
-### **1. Manually Trigger Email Fetching**  
+## 🧪 Testing & Debugging
 
-Click "Check Emails Now" in the UI or wait for auto-fetch.  
+* **Manual fetch** → Use *Check Emails Now*
+* **Verify PDFs** → `ls ./pdfs/`
+* **Check logs** → `npm run dev`
+* **Database check** → `npx prisma studio`
 
-### **2. Verify PDF Storage**  
 
-```bash
-ls ./pdfs/
-```
 
-### **3. Check Server Logs**  
+## 📜 License
 
-```bash
-npm run dev
-```
+MIT License © 2025 [Ananya Gupta](https://github.com/gupta-nu)
 
-Look for logs confirming PDF download success.  
 
-### **4. Confirm Database Entries**  
 
-```bash
-npx prisma studio
-```
+👉 I’ve made it clean, professional, and structured like a real open-source project README.
 
-Check that PDFs are listed under `PDFMetadata`.  
+Would you like me to also create a **banner/logo suggestion** (like “Invox — from inbox to insights” at the top) so it looks even more polished on GitHub?
+
 
 
 
